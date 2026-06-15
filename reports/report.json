@@ -1,0 +1,374 @@
+{
+    "title": "AntiGravity Security Audit Report",
+    "timestamp": "2026-06-15T17:44:23.827169",
+    "summary": {
+        "total_tests": 19,
+        "passed": 2,
+        "failed": 17,
+        "errors": 0,
+        "skipped": 0
+    },
+    "results": [
+        {
+            "test_id": "EvilTwinTest",
+            "name": "Evil Twin Vulnerability Test",
+            "module": "wifi",
+            "category": "auth",
+            "status": "FAIL",
+            "severity": "CRITICAL",
+            "details": {
+                "connected_clients": [
+                    "00:aa:bb:cc:dd:11",
+                    "00:aa:bb:cc:dd:22"
+                ],
+                "cert_validated": false,
+                "mitm_possible": true,
+                "vulnerability_summary": "Clients accept untrusted certificates, allowing complete Man-in-the-Middle (MitM) attacks."
+            },
+            "cve_refs": [],
+            "timestamp": "2026-06-15T17:44:19.520092",
+            "duration_ms": 1000
+        },
+        {
+            "test_id": "Dot1XTest",
+            "name": "802.1X Enterprise Authentication Test",
+            "module": "wifi",
+            "category": "auth",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "details": {
+                "invalid_cert_rejected": true,
+                "weak_credentials_allowed": true,
+                "found_weak_cred": "testuser/123456",
+                "mutual_authentication_enforced": false,
+                "mitm_resistance_score": 0.2,
+                "eap_method_strength": "PEAP-MSCHAPv2 (Weak)",
+                "unauthorized_login_rate": 0.8,
+                "remediation": "Sử dụng EAP-TLS thay cho PEAP-MSCHAPv2, áp dụng chính sách mật khẩu mạnh và bắt buộc xác thực chứng chỉ hai chiều."
+            },
+            "cve_refs": [],
+            "timestamp": "2026-06-15T17:44:19.520340",
+            "duration_ms": 0
+        },
+        {
+            "test_id": "ACLTest",
+            "name": "WiFi Access Control List (ACL) Test",
+            "module": "wifi",
+            "category": "access_control",
+            "status": "PASS",
+            "severity": "INFO",
+            "details": {
+                "unauthorized_subnet_accessible": false,
+                "acl_rules_count": 5,
+                "remediation": "Các cấu hình ACL bảo vệ chính xác các phân vùng mạng nhạy cảm."
+            },
+            "cve_refs": [],
+            "timestamp": "2026-06-15T17:44:19.820882",
+            "duration_ms": 300
+        },
+        {
+            "test_id": "MACFilterTest",
+            "name": "WiFi MAC Filtering & Spoofing Test",
+            "module": "wifi",
+            "category": "access_control",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "details": {
+                "mac_spoofing_succeeded": true,
+                "wips_detected": false,
+                "bypassed": true,
+                "remediation": "Không nên tin tưởng cơ chế lọc MAC đơn thuần. Bắt buộc cấu hình xác thực WPA2/WPA3 Enterprise hoặc 802.1X để định danh thiết bị."
+            },
+            "cve_refs": [],
+            "timestamp": "2026-06-15T17:44:20.321609",
+            "duration_ms": 500
+        },
+        {
+            "test_id": "ClientIsolationTest",
+            "name": "WiFi Client Isolation Test",
+            "module": "wifi",
+            "category": "access_control",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "details": {
+                "client_to_client_ping_succeeded": true,
+                "arp_spoofing_possible": true,
+                "isolation_disabled": true,
+                "remediation": "Bật tính năng Client Isolation (AP Isolation) trên Access Point để ngăn chặn giao tiếp ngang hàng trực tiếp giữa các clients."
+            },
+            "cve_refs": [],
+            "timestamp": "2026-06-15T17:44:20.721923",
+            "duration_ms": 400
+        },
+        {
+            "test_id": "KRACKTest",
+            "name": "KRACK (Key Reinstallation Attacks) Vulnerability Test",
+            "module": "wifi",
+            "category": "encryption",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "details": {
+                "pcap_file": "handshake_capture.pcap",
+                "nonce_reuse_detected": true,
+                "vulnerable": true,
+                "patch_applied": false,
+                "remediation": "Cập nhật firmware mới nhất cho thiết bị client để vá lỗi KRACK (đặc biệt là bản vá cho hostapd/wpa_supplicant)."
+            },
+            "cve_refs": [
+                "CVE-2017-13077",
+                "CVE-2017-13078"
+            ],
+            "timestamp": "2026-06-15T17:44:20.722169",
+            "duration_ms": 0
+        },
+        {
+            "test_id": "Kr00kTest",
+            "name": "Kr00k (CVE-2019-15126) Vulnerability Test",
+            "module": "wifi",
+            "category": "encryption",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "details": {
+                "client_chipset": "Broadcom BCM43438 (Vulnerable)",
+                "all_zero_key_encryption_detected": true,
+                "vulnerable": true,
+                "remediation": "Cập nhật Driver mạng hoặc Firmware cho thiết bị sử dụng chipset Broadcom/Cypress để loại bỏ lỗ hổng Kr00k."
+            },
+            "cve_refs": [
+                "CVE-2019-15126"
+            ],
+            "timestamp": "2026-06-15T17:44:20.722294",
+            "duration_ms": 0
+        },
+        {
+            "test_id": "FragAttacksTest",
+            "name": "FragAttacks (Fragmentation & Aggregation Attacks) Test",
+            "module": "wifi",
+            "category": "encryption",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "details": {
+                "vulnerabilities": {
+                    "accepts_unencrypted_fragments": true,
+                    "aggregation_packet_injection_possible": false,
+                    "mixed_key_assembly_allowed": true
+                },
+                "patched": false,
+                "remediation": "Cập nhật hệ điều hành và driver mạng của thiết bị. Bật kiểm tra tính toàn vẹn gói tin chặt chẽ hơn tại tầng MAC."
+            },
+            "cve_refs": [
+                "CVE-2020-24587",
+                "CVE-2020-24588",
+                "CVE-2020-26147"
+            ],
+            "timestamp": "2026-06-15T17:44:20.722405",
+            "duration_ms": 0
+        },
+        {
+            "test_id": "WPA3FuzzingTest",
+            "name": "WPA3 SAE Fuzzing & Side-Channel Test",
+            "module": "wifi",
+            "category": "encryption",
+            "status": "FAIL",
+            "severity": "MEDIUM",
+            "details": {
+                "crashes_found": 0,
+                "crash_types": [],
+                "side_channel_risk": true,
+                "timing_difference_detected_ms": 12.4,
+                "remediation": "Bật cấu hình chống tấn công Timing Attack trong thư viện mã hóa (ví dụ: dùng các phép toán thời gian cố định - constant-time operations cho SAE)."
+            },
+            "cve_refs": [
+                "CVE-2019-9494"
+            ],
+            "timestamp": "2026-06-15T17:44:21.222688",
+            "duration_ms": 500
+        },
+        {
+            "test_id": "LOIDTest",
+            "name": "GPON LOID Cloning & Registration Test",
+            "module": "gpon",
+            "category": "auth",
+            "status": "FAIL",
+            "severity": "CRITICAL",
+            "details": {
+                "collected_loid": "LOID_VNPT_TEST_12345",
+                "clone_registration_succeeded": true,
+                "whitelist_enforced": false,
+                "olt_detected_clone": false,
+                "severity_assessment": "CRITICAL",
+                "remediation": "Bật xác thực kết hợp (LOID + SN) và cấu hình Whitelist nghiêm ngặt trên OLT. Chặn các kết nối trùng lặp LOID (Duplicate detection)."
+            },
+            "cve_refs": [
+                "CVE-2025-29525"
+            ],
+            "timestamp": "2026-06-15T17:44:21.223030",
+            "duration_ms": 0
+        },
+        {
+            "test_id": "SerialNumberTest",
+            "name": "GPON Serial Number Cloning Test",
+            "module": "gpon",
+            "category": "auth",
+            "status": "FAIL",
+            "severity": "CRITICAL",
+            "details": {
+                "target_serial_number": "HWTC12345678",
+                "clone_succeeded": true,
+                "olt_detection_triggered": false,
+                "dual_registration_possible": true,
+                "remediation": "Sử dụng mã hóa AES và xác thực mật khẩu ONU (PLOAM password) kết hợp với Serial Number để ngăn chặn giả mạo phần cứng."
+            },
+            "cve_refs": [
+                "CVE-2025-63353"
+            ],
+            "timestamp": "2026-06-15T17:44:21.223213",
+            "duration_ms": 0
+        },
+        {
+            "test_id": "ONURegistrationTest",
+            "name": "Rogue ONU Registration Test",
+            "module": "gpon",
+            "category": "auth",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "details": {
+                "auto_discovery_enabled": true,
+                "unauthorized_onu_accepted": true,
+                "vulnerability_found": true,
+                "remediation": "Tắt tính năng tự động kích hoạt (Auto-activation) cho các ONU mới trên OLT. Mọi ONU mới phải được phê duyệt thủ công bởi quản trị viên."
+            },
+            "cve_refs": [],
+            "timestamp": "2026-06-15T17:44:21.723680",
+            "duration_ms": 500
+        },
+        {
+            "test_id": "GPONKeyExchangeTest",
+            "name": "GPON Key Exchange & Management Test",
+            "module": "gpon",
+            "category": "encryption",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "details": {
+                "key_sent_cleartext": false,
+                "key_refresh_interval_seconds": 18000,
+                "per_onu_key_enforced": true,
+                "remediation": "Giảm chu kỳ đổi khóa mã hóa xuống dưới 1 giờ (3600 giây). Đảm bảo mọi bản tin khóa được mã hóa qua kênh an toàn."
+            },
+            "cve_refs": [],
+            "timestamp": "2026-06-15T17:44:22.224298",
+            "duration_ms": 500
+        },
+        {
+            "test_id": "AES128Test",
+            "name": "GPON AES-128 Encryption Test",
+            "module": "gpon",
+            "category": "encryption",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "details": {
+                "aes_128_enabled": false,
+                "downstream_encrypted": false,
+                "remediation": "Bật mã hóa AES-128 cho tất cả các cổng GEM port trên OLT để bảo vệ luồng dữ liệu downstream."
+            },
+            "cve_refs": [],
+            "timestamp": "2026-06-15T17:44:22.525041",
+            "duration_ms": 300
+        },
+        {
+            "test_id": "OpticalTapTest",
+            "name": "Optical Tapping Vulnerability Test",
+            "module": "gpon",
+            "category": "encryption",
+            "status": "FAIL",
+            "severity": "MEDIUM",
+            "details": {
+                "optical_loss_db": 4.2,
+                "olt_alarm_triggered": false,
+                "vulnerable": true,
+                "remediation": "Cấu hình lại ngưỡng cảnh báo suy hao Rx/Tx trên cổng OLT. Tích hợp cảnh báo thời gian thực khi có biến động suy hao đột ngột."
+            },
+            "cve_refs": [],
+            "timestamp": "2026-06-15T17:44:22.525310",
+            "duration_ms": 0
+        },
+        {
+            "test_id": "CommandInjectionTest",
+            "name": "GPON ONU Command Injection Vulnerability Audit",
+            "module": "gpon",
+            "category": "access_control",
+            "status": "FAIL",
+            "severity": "CRITICAL",
+            "details": {
+                "vulnerable": true,
+                "vulnerability_proof": "Found system command execution flag in diagnosis panel.",
+                "impact": "Remote Code Execution (RCE) as root user.",
+                "remediation": "Cập nhật bản vá firmware mới nhất của nhà sản xuất ONU. Áp dụng cơ chế lọc/sanitize chặt chẽ các ký tự đặc biệt (;, |, $, &) trong tất cả trường đầu vào."
+            },
+            "cve_refs": [
+                "CVE-2026-2907",
+                "CVE-2026-5339"
+            ],
+            "timestamp": "2026-06-15T17:44:22.525453",
+            "duration_ms": 0
+        },
+        {
+            "test_id": "FTPAccessTest",
+            "name": "GPON ONU FTP Unrestricted Access Test",
+            "module": "gpon",
+            "category": "access_control",
+            "status": "FAIL",
+            "severity": "HIGH",
+            "details": {
+                "anonymous_login_allowed": true,
+                "default_credentials_allowed": true,
+                "directory_traversal_possible": true,
+                "remediation": "Tắt hoàn toàn dịch vụ FTP nếu không sử dụng, hoặc vô hiệu hóa tài khoản anonymous, thay đổi mật khẩu mặc định và giới hạn dải IP được phép kết nối."
+            },
+            "cve_refs": [
+                "CVE-2025-10957"
+            ],
+            "timestamp": "2026-06-15T17:44:22.925659",
+            "duration_ms": 400
+        },
+        {
+            "test_id": "WebAPITest",
+            "name": "GPON ONU Web/REST API Fuzzing & Audit",
+            "module": "gpon",
+            "category": "access_control",
+            "status": "PASS",
+            "severity": "INFO",
+            "details": {
+                "unprotected_endpoints_found": [
+                    "/api/v1/system/status"
+                ],
+                "broken_object_level_auth": false,
+                "total_endpoints_scanned": 12,
+                "remediation": "Đảm bảo tất cả các Web API endpoint đều yêu cầu token xác thực hợp lệ."
+            },
+            "cve_refs": [],
+            "timestamp": "2026-06-15T17:44:23.326085",
+            "duration_ms": 400
+        },
+        {
+            "test_id": "CVE202529525Test",
+            "name": "CVE-2025-29525 GPON Auth Bypass Compliance Test",
+            "module": "cve",
+            "category": "auth",
+            "status": "FAIL",
+            "severity": "CRITICAL",
+            "details": {
+                "cve": "CVE-2025-29525",
+                "registration_packet_sent_without_loid": true,
+                "olt_accepted_registration": true,
+                "status_details": "OLT registered the ONU even when the LOID attribute was completely missing or empty.",
+                "remediation": "Nâng cấp firmware của OLT để vá lỗi CVE-2025-29525. Bắt buộc kiểm tra LOID không được rỗng khi nhận bản tin PLOAM registration."
+            },
+            "cve_refs": [
+                "CVE-2025-29525"
+            ],
+            "timestamp": "2026-06-15T17:44:23.826735",
+            "duration_ms": 500
+        }
+    ]
+}

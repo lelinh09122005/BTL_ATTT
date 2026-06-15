@@ -1,0 +1,14 @@
+# AntiGravity WiFi Configuration
+# --------------------------------------------------
+
+simulated_mode: true
+output_dir: "./reports/wifi"
+log_level: "DEBUG"
+test_timeout: 45
+
+target_interface: "wlan0mon"
+target_ssid: "Enterprise_Sec_WIFI"
+target_bssid: "AA:BB:CC:DD:EE:FF"
+eap_method: "PEAP"
+identity: "admin"
+password: "admin"

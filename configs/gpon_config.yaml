@@ -1,0 +1,15 @@
+# AntiGravity GPON Configuration
+# --------------------------------------------------
+
+simulated_mode: true
+output_dir: "./reports/gpon"
+log_level: "DEBUG"
+test_timeout: 60
+
+gpon_olt_ip: "10.0.0.1"
+gpon_interface: "eth2"
+onu_mgmt_ip: "10.0.0.15"
+onu_list:
+  - "HWTC88776655"
+  - "ZTEG11223344"
+  - "ELTX44332211"

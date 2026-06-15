@@ -1,0 +1,522 @@
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>AntiGravity Security Audit Report</title>
+            <style>
+                :root {
+                    --bg-dark: #0f172a;
+                    --panel-dark: #1e293b;
+                    --text-main: #f8fafc;
+                    --text-muted: #94a3b8;
+                    --accent-blue: #38bdf8;
+                    --color-pass: #10b981;
+                    --color-fail: #ef4444;
+                    --color-warn: #f59e0b;
+                }
+                body {
+                    background-color: var(--bg-dark);
+                    color: var(--text-main);
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    margin: 0;
+                    padding: 20px;
+                }
+                .container {
+                    max-width: 1100px;
+                    margin: 0 auto;
+                }
+                header {
+                    border-bottom: 2px solid var(--panel-dark);
+                    padding-bottom: 20px;
+                    margin-bottom: 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                h1 { margin: 0; color: var(--accent-blue); font-size: 2.2rem; }
+                .meta-time { color: var(--text-muted); font-size: 0.9rem; }
+                .summary-cards {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 30px;
+                }
+                .card {
+                    background-color: var(--panel-dark);
+                    padding: 20px;
+                    border-radius: 10px;
+                    text-align: center;
+                    border: 1px solid #334155;
+                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                }
+                .card-title { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; }
+                .card-value { font-size: 2.5rem; font-weight: bold; margin-top: 10px; }
+                .pass { color: var(--color-pass); }
+                .fail { color: var(--color-fail); }
+                .warn { color: var(--color-warn); }
+                
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-bottom: 40px;
+                    background-color: var(--panel-dark);
+                    border-radius: 8px;
+                    overflow: hidden;
+                }
+                th, td {
+                    padding: 14px 20px;
+                    text-align: left;
+                    border-bottom: 1px solid #334155;
+                }
+                th {
+                    background-color: #1e293b;
+                    color: var(--accent-blue);
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    font-size: 0.85rem;
+                }
+                tr:last-child td { border-bottom: none; }
+                .status-badge {
+                    padding: 4px 10px;
+                    border-radius: 20px;
+                    font-size: 0.8rem;
+                    font-weight: bold;
+                    display: inline-block;
+                }
+                .badge-pass { background-color: rgba(16, 185, 129, 0.2); color: var(--color-pass); }
+                .badge-fail { background-color: rgba(239, 68, 68, 0.2); color: var(--color-fail); }
+                .badge-error { background-color: rgba(245, 158, 11, 0.2); color: var(--color-warn); }
+                
+                .comparison-table td { font-size: 0.95rem; }
+                .remediation-box {
+                    font-size: 0.85rem;
+                    color: var(--text-muted);
+                    background: #1e293b;
+                    border-left: 4px solid var(--accent-blue);
+                    padding: 8px 12px;
+                    margin-top: 6px;
+                    border-radius: 0 4px 4px 0;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <header>
+                    <div>
+                        <h1>AntiGravity Security Report</h1>
+                        <div class="meta-time">Generated on: 2026-06-15 17:44:23</div>
+                    </div>
+                </header>
+                
+                <div class="summary-cards">
+                    <div class="card">
+                        <div class="card-title">Total Tests</div>
+                        <div class="card-value">19</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Passed</div>
+                        <div class="card-value pass">2</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Failed</div>
+                        <div class="card-value fail">17</div>
+                    </div>
+                </div>
+
+                <h2>1. WiFi vs GPON Security Comparison</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Security Dimension</th>
+                            <th>WiFi (802.11) Status</th>
+                            <th>GPON (G.984) Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Authentication</strong></td>
+                            <td>WPA3-SAE & 802.1X Enterprise</td>
+                            <td>LOID & Serial Number</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Encryption</strong></td>
+                            <td>AES-CCMP / GCMP (128/256-bit)</td>
+                            <td>AES-128 downstream (Upstream unencrypted)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Access Control</strong></td>
+                            <td>MAC filtering & client isolation</td>
+                            <td>OLT Port security & IP filters</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>2. Detailed Test Results</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Module</th>
+                            <th>Test Case</th>
+                            <th>Severity</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td><strong>WIFI</strong> (auth)</td>
+                            <td>
+                                <div>Evil Twin Vulnerability Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Clients accept untrusted certificates, allowing complete Man-in-the-Middle (MitM) attacks.</div>
+                                
+                            </td>
+                            <td><span class="warn">CRITICAL</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>WIFI</strong> (auth)</td>
+                            <td>
+                                <div>802.1X Enterprise Authentication Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                                <div class="remediation-box">
+                                    <strong>Remediation:</strong> Sử dụng EAP-TLS thay cho PEAP-MSCHAPv2, áp dụng chính sách mật khẩu mạnh và bắt buộc xác thực chứng chỉ hai chiều.
+                                </div>
+                                
+                            </td>
+                            <td><span class="warn">HIGH</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>WIFI</strong> (access_control)</td>
+                            <td>
+                                <div>WiFi Access Control List (ACL) Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                            </td>
+                            <td><span class="warn">INFO</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-pass">PASS</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>WIFI</strong> (access_control)</td>
+                            <td>
+                                <div>WiFi MAC Filtering & Spoofing Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                                <div class="remediation-box">
+                                    <strong>Remediation:</strong> Không nên tin tưởng cơ chế lọc MAC đơn thuần. Bắt buộc cấu hình xác thực WPA2/WPA3 Enterprise hoặc 802.1X để định danh thiết bị.
+                                </div>
+                                
+                            </td>
+                            <td><span class="warn">HIGH</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>WIFI</strong> (access_control)</td>
+                            <td>
+                                <div>WiFi Client Isolation Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                                <div class="remediation-box">
+                                    <strong>Remediation:</strong> Bật tính năng Client Isolation (AP Isolation) trên Access Point để ngăn chặn giao tiếp ngang hàng trực tiếp giữa các clients.
+                                </div>
+                                
+                            </td>
+                            <td><span class="warn">HIGH</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>WIFI</strong> (encryption)</td>
+                            <td>
+                                <div>KRACK (Key Reinstallation Attacks) Vulnerability Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                                <div class="remediation-box">
+                                    <strong>Remediation:</strong> Cập nhật firmware mới nhất cho thiết bị client để vá lỗi KRACK (đặc biệt là bản vá cho hostapd/wpa_supplicant).
+                                </div>
+                                
+                            </td>
+                            <td><span class="warn">HIGH</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>WIFI</strong> (encryption)</td>
+                            <td>
+                                <div>Kr00k (CVE-2019-15126) Vulnerability Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                                <div class="remediation-box">
+                                    <strong>Remediation:</strong> Cập nhật Driver mạng hoặc Firmware cho thiết bị sử dụng chipset Broadcom/Cypress để loại bỏ lỗ hổng Kr00k.
+                                </div>
+                                
+                            </td>
+                            <td><span class="warn">HIGH</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>WIFI</strong> (encryption)</td>
+                            <td>
+                                <div>FragAttacks (Fragmentation & Aggregation Attacks) Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                                <div class="remediation-box">
+                                    <strong>Remediation:</strong> Cập nhật hệ điều hành và driver mạng của thiết bị. Bật kiểm tra tính toàn vẹn gói tin chặt chẽ hơn tại tầng MAC.
+                                </div>
+                                
+                            </td>
+                            <td><span class="warn">HIGH</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>WIFI</strong> (encryption)</td>
+                            <td>
+                                <div>WPA3 SAE Fuzzing & Side-Channel Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                                <div class="remediation-box">
+                                    <strong>Remediation:</strong> Bật cấu hình chống tấn công Timing Attack trong thư viện mã hóa (ví dụ: dùng các phép toán thời gian cố định - constant-time operations cho SAE).
+                                </div>
+                                
+                            </td>
+                            <td><span class="warn">MEDIUM</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>GPON</strong> (auth)</td>
+                            <td>
+                                <div>GPON LOID Cloning & Registration Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                                <div class="remediation-box">
+                                    <strong>Remediation:</strong> Bật xác thực kết hợp (LOID + SN) và cấu hình Whitelist nghiêm ngặt trên OLT. Chặn các kết nối trùng lặp LOID (Duplicate detection).
+                                </div>
+                                
+                            </td>
+                            <td><span class="warn">CRITICAL</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>GPON</strong> (auth)</td>
+                            <td>
+                                <div>GPON Serial Number Cloning Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                                <div class="remediation-box">
+                                    <strong>Remediation:</strong> Sử dụng mã hóa AES và xác thực mật khẩu ONU (PLOAM password) kết hợp với Serial Number để ngăn chặn giả mạo phần cứng.
+                                </div>
+                                
+                            </td>
+                            <td><span class="warn">CRITICAL</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>GPON</strong> (auth)</td>
+                            <td>
+                                <div>Rogue ONU Registration Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                                <div class="remediation-box">
+                                    <strong>Remediation:</strong> Tắt tính năng tự động kích hoạt (Auto-activation) cho các ONU mới trên OLT. Mọi ONU mới phải được phê duyệt thủ công bởi quản trị viên.
+                                </div>
+                                
+                            </td>
+                            <td><span class="warn">HIGH</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>GPON</strong> (encryption)</td>
+                            <td>
+                                <div>GPON Key Exchange & Management Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                                <div class="remediation-box">
+                                    <strong>Remediation:</strong> Giảm chu kỳ đổi khóa mã hóa xuống dưới 1 giờ (3600 giây). Đảm bảo mọi bản tin khóa được mã hóa qua kênh an toàn.
+                                </div>
+                                
+                            </td>
+                            <td><span class="warn">HIGH</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>GPON</strong> (encryption)</td>
+                            <td>
+                                <div>GPON AES-128 Encryption Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                                <div class="remediation-box">
+                                    <strong>Remediation:</strong> Bật mã hóa AES-128 cho tất cả các cổng GEM port trên OLT để bảo vệ luồng dữ liệu downstream.
+                                </div>
+                                
+                            </td>
+                            <td><span class="warn">HIGH</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>GPON</strong> (encryption)</td>
+                            <td>
+                                <div>Optical Tapping Vulnerability Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                                <div class="remediation-box">
+                                    <strong>Remediation:</strong> Cấu hình lại ngưỡng cảnh báo suy hao Rx/Tx trên cổng OLT. Tích hợp cảnh báo thời gian thực khi có biến động suy hao đột ngột.
+                                </div>
+                                
+                            </td>
+                            <td><span class="warn">MEDIUM</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>GPON</strong> (access_control)</td>
+                            <td>
+                                <div>GPON ONU Command Injection Vulnerability Audit</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                                <div class="remediation-box">
+                                    <strong>Remediation:</strong> Cập nhật bản vá firmware mới nhất của nhà sản xuất ONU. Áp dụng cơ chế lọc/sanitize chặt chẽ các ký tự đặc biệt (;, |, $, &) trong tất cả trường đầu vào.
+                                </div>
+                                
+                            </td>
+                            <td><span class="warn">CRITICAL</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>GPON</strong> (access_control)</td>
+                            <td>
+                                <div>GPON ONU FTP Unrestricted Access Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                                <div class="remediation-box">
+                                    <strong>Remediation:</strong> Tắt hoàn toàn dịch vụ FTP nếu không sử dụng, hoặc vô hiệu hóa tài khoản anonymous, thay đổi mật khẩu mặc định và giới hạn dải IP được phép kết nối.
+                                </div>
+                                
+                            </td>
+                            <td><span class="warn">HIGH</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>GPON</strong> (access_control)</td>
+                            <td>
+                                <div>GPON ONU Web/REST API Fuzzing & Audit</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                            </td>
+                            <td><span class="warn">INFO</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-pass">PASS</span>
+                                
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td><strong>CVE</strong> (auth)</td>
+                            <td>
+                                <div>CVE-2025-29525 GPON Auth Bypass Compliance Test</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;"></div>
+                                
+                                <div class="remediation-box">
+                                    <strong>Remediation:</strong> Nâng cấp firmware của OLT để vá lỗi CVE-2025-29525. Bắt buộc kiểm tra LOID không được rỗng khi nhận bản tin PLOAM registration.
+                                </div>
+                                
+                            </td>
+                            <td><span class="warn">CRITICAL</span></td>
+                            <td>
+                                
+                                    <span class="status-badge badge-fail">FAIL</span>
+                                
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </body>
+        </html>
+        
